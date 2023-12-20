@@ -29,6 +29,8 @@ A página de detalhes exibe informações mais abrangentes sobre uma vaga espec�
 2. Clique em uma vaga para obter mais detalhes, sendo redirecionado para a página de detalhes (`detalhes.html`).
 3. Na página de detalhes, são exibidas informações específicas da vaga selecionada.
 
+Existe ainda um deploy dessa aplicação ativo, veja o link no "about".
+
 ## ⚙️ Requisitos
 
 - Conexão com a internet para carregar as informações das vagas a partir da planilha do Google Sheets.
