@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Detalhes da Vaga</title>
+  </head>
+  <body>
+    <div class="container-fluid" id="header">
+        <img
+        src="senailogo.png"
+        alt="Logo SENAI"
+        class="img-fluid mb-4"
+        style="max-width: 100%; height: auto"
+      />
+      <h1>Detalhes da Vaga</h1>
+    </div>
+
+    <div class="container" id="detalhesContainer">
+      <!-- Detalhes da vaga serão inseridos aqui via JavaScript -->
+    </div>
+
+    <script>
+      function fetchData() {
+        fetch(
+          "https://sheets.googleapis.com/v4/spreadsheets/1PtKbjTICqlOEbaBWxnzEytYvppqYRx51kB8qFv7HI3M/values/vagas!A1:Z200?majorDimension=ROWS&key=AIzaSyArjp1cRDqO1wXeEP6prDJ0bbYCUS0ys4o"
+        )
+          .then((response) => response.json())
+          .then((data) => displayData(data.values))
+          .catch((error) =>
+            console.error("Erro ao recuperar os dados:", error)
+          );
+      }
+
+      function displayData(data) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const vagaId = urlParams.get("vagaId");
+
+        console.log("vagaId");
+
+        if (vagaId) {
+          const detalhesContainer =
+            document.getElementById("detalhesContainer");
+
+          const vagaSelecionada = data.find((vaga) => vaga[0] === vagaId);
+
+          if (vagaSelecionada) {
+            detalhesContainer.innerHTML = `
+    <div class="container mt-4">
+      <h2 class="mb-4">Empresa: ${vagaSelecionada[2]} </h2>
+      <img src="${vagaSelecionada[1]}" alt="Logo" class="img-fluid mb-4" style="max-width: 200px; max-height: 200px;">
+      <p><strong>Cargo:</strong> ${vagaSelecionada[3]}</p>
+      <p><strong>Tipo de Vaga:</strong> ${vagaSelecionada[4]}</p>
+      <p><strong>Descrição do Cargo:</strong> ${vagaSelecionada[5]}</p>
+      <p><strong>Requisitos:</strong> ${vagaSelecionada[7]}</p>
+      <p><strong>Benefícios:</strong> ${vagaSelecionada[8]}</p>
+      <p><strong>Horário:</strong> ${vagaSelecionada[9]}</p>
+      <p><strong>Candidatura:</strong> ${vagaSelecionada[10]}</p>
+      <p><strong>Data Limite:</strong> ${vagaSelecionada[11]}</p>
+      <p><strong>Observações:</strong> ${vagaSelecionada[12]}</p>
+      <p><strong>Email de Contato:</strong> ${vagaSelecionada[13]}</p>
+      <p><strong>Responsável:</strong> ${vagaSelecionada[14]}</p>
+    </div>
+  `;
+          } else {
+            detalhesContainer.innerHTML = `
+    <div class="container mt-4">
+      <p class="alert alert-warning">Vaga não encontrada.</p>
+    </div>
+  `;
+          }
+        } else {
+          console.error("ID da vaga não especificado.");
+        }
+      }
+
+      window.onload = function () {
+        fetchData();
+      };
+    </script>
+  </body>
+</html>
